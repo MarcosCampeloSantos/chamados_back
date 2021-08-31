@@ -76,8 +76,11 @@ class AdmController extends Controller
     public function BuscarRel()
     {
         $relacionamentos = Relacionamento::all();
+
+        $departamento = Departamento::where('id', $relacionamentos->departamentos_id)->toArray();
         
-        return response()->json($relacionamentos);
+        
+        return response()->json([$relacionamentos => [$departamento]]);
     }
     
 }

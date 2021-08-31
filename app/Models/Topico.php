@@ -8,4 +8,9 @@ use Illuminate\Database\Eloquent\Model;
 class Topico extends Model
 {
     use HasFactory;
+
+    public function relacionamentos()
+    {
+        return $this->hasMany('App\Models\Relacionamento');
+    }
 }
