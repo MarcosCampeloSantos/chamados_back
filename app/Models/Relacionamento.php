@@ -11,11 +11,16 @@ class Relacionamento extends Model
 
     public function topico()
     {
-        return $this->belongsTo('App\Models\Topico');
+        return $this->hasMany(Topico::class);
     }
 
     public function departamento()
     {
-        return $this->belongsTo('App\Models\Departamento');
+        return $this->hasMany(Departamento::class);
+    }
+
+    public function atribuicoes()
+    {
+        return $this->hasMany(Atribuicoe::class);
     }
 }

@@ -47,8 +47,8 @@ class AdmController extends Controller
             $relacionamentos->topicos_id = $request->rel_top;
             $relacionamentos->save();
 
-            $atribuicao->id_user = $user->id;
-            $atribuicao->id_relacionamento = $relacionamentos->id;
+            $atribuicao->user_id = $user->id;
+            $atribuicao->relacionamento_id = $relacionamentos->id;
             $atribuicao->save();
 
             return response()->json('Relacionamento criado com sucesso!');
@@ -76,11 +76,32 @@ class AdmController extends Controller
     public function BuscarRel()
     {
         $relacionamentos = Relacionamento::all();
+        $usuarios = User::all();
+        $atribuicoes = Atribuicoe::all();
+        $resultado = [];
+        $atribuidos = [];
+        $teste = [];
 
-        $departamento = Departamento::where('id', $relacionamentos->departamentos_id)->toArray();
+        $i = 1;
+        foreach ($relacionamentos as $rel) {
+            $departamentos = Departamento::with('relacionamentos')->find($i);
+            $topicos = Topico::with('relacionamentos')->find($i);
+            $atribuidos = Atribuicoe::with('relacionamento')->get();
+            foreach($atribuidos as $atrib){
+                if($atrib->relacionamento_id == $rel->id){
+                    array_push($teste, $atrib->id);
+                }
+            }
+            $rel->teste = $teste;
+            $teste = [];
+            $rel->departamento_name = $departamentos->departamento;
+            $rel->topico_name = $topicos->topicos;
+            array_push($resultado, $rel);
+            $i++;
+        }
         
         
-        return response()->json([$relacionamentos => [$departamento]]);
+        return response()->json($resultado);
     }
     
 }

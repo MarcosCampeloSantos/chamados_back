@@ -11,6 +11,6 @@ class Departamento extends Model
 
     public function relacionamentos()
     {
-        return $this->hasMany('App\Models\Relacionamento');
+        return $this->belongsTo(Relacionamento::class);
     }
 }
