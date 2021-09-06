@@ -11,6 +11,7 @@ use App\Models\Relacionamento;
 use App\Models\Topico;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class AdmController extends Controller
 {
@@ -19,7 +20,7 @@ class AdmController extends Controller
     public function StoreDepartamento(DepRequest $request)
     {
         $departamento = new Departamento;
-        $departamento->departamento = $request->cria_dep;
+        $departamento->departamentos = $request->cria_dep;
         $departamento->menssageremail = $request->cria_dep_email;
 
         $departamento->save();
@@ -57,13 +58,43 @@ class AdmController extends Controller
         }
     }
 
+    //Edições / Exclusão de Dados
+    public function EditarRel(Request $request)
+    {
+        $id_rel = $request->id_rel;
+        $relacionamento = Relacionamento::where('id', $id_rel )->first();
+        if ($relacionamento->id === $id_rel && !Relacionamento::where('departamentos_id', $request->dep)->where('topicos_id', $request->top)->first()) {
+            $relacionamento->departamentos_id = $request->dep;
+            $relacionamento->topicos_id = $request->top;
+            $relacionamento->save();
+
+            return response()->json('Relacionamento Editado com sucesso!');
+        }else{
+            return response()->json(['errors' => ['erro' => 'Relacionamento já Existe']], 422);
+        }
+    }
+
+    public function AdcAtributo(Request $request)
+    {
+        if (!Atribuicoe::where('relacionamento_id', $request->id_rel)->where('user_id', $request->rel_user_edit)->first()) {
+            $atributo = new Atribuicoe();
+            $atributo->user_id = $request->rel_user_edit;
+            $atributo->relacionamento_id = $request->id_rel;
+            $atributo->save();
+
+            return response()->json('Usuario Atribuido com Sucesso!');
+        }else{
+            return response()->json(['errors' => ['erro' => 'Usuario já Relacionado']], 422);
+        }
+        
+    }
 
     // Busca no Banco de Dados
     public function BuscarDep()
     {
-        $departamento = Departamento::all();
+        $departamentos = Departamento::all();
 
-        return response()->json($departamento);
+        return response()->json($departamentos);
     }
 
     public function BuscarTop()
@@ -76,28 +107,29 @@ class AdmController extends Controller
     public function BuscarRel()
     {
         $relacionamentos = Relacionamento::all();
-        $usuarios = User::all();
-        $atribuicoes = Atribuicoe::all();
+        $atribuicoes = [];
         $resultado = [];
         $atribuidos = [];
-        $teste = [];
+        $aux = [];
 
-        $i = 1;
         foreach ($relacionamentos as $rel) {
-            $departamentos = Departamento::with('relacionamentos')->find($i);
-            $topicos = Topico::with('relacionamentos')->find($i);
+            $departamentos = Departamento::with('relacionamentos')->find($rel->departamentos_id);
+            $topicos = Topico::with('relacionamentos')->find($rel->topicos_id);
             $atribuidos = Atribuicoe::with('relacionamento')->get();
             foreach($atribuidos as $atrib){
                 if($atrib->relacionamento_id == $rel->id){
-                    array_push($teste, $atrib->id);
+                    $aux = User::with('atribuicoes')->find($atrib->user_id);
+                    array_push($atribuicoes, $aux);
                 }
             }
-            $rel->teste = $teste;
-            $teste = [];
-            $rel->departamento_name = $departamentos->departamento;
+            
+            $rel->atribuidos = $atribuicoes;
+            $rel->departamento_name = $departamentos->departamentos;
             $rel->topico_name = $topicos->topicos;
+
+            $atribuicoes = [];
+        
             array_push($resultado, $rel);
-            $i++;
         }
         
         
