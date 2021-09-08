@@ -29,3 +29,8 @@ Route::post('/criar_top', [AdmController::class, 'StoreTopicos'])->name('CriarTo
 Route::post('/criar_rel', [AdmController::class, 'StoreRelaciomento'])->name('CriarRel'); #Cria novo Relacionamento
 Route::post('/editar_rel', [AdmController::class, 'EditarRel'])->name('EditarRel'); #Edita um relacionamento
 Route::post('/adc_atribuido', [AdmController::class, 'AdcAtributo'])->name('AdcAtributo'); #Edita usuarios atribuidos ao relacionamento
+
+//Methods Delete
+Route::delete('/trash_atribuido', [AdmController::class, 'ExcluirAtributo'])->name('ExcluirAtributo'); #Excluir usuarios atribuidos ao relacionamento
+Route::delete('/trash_relacionamento', [AdmController::class, 'ExcluirRel'])->name('ExcluirRel'); #Excluir relacionamentos
+Route::delete('/trash_departamento', [AdmController::class, 'ExcluirDep'])->name('ExcluirDep'); #Excluir Departamento

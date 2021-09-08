@@ -16,7 +16,8 @@ use Illuminate\Support\Facades\Log;
 class AdmController extends Controller
 {
 
-    // Criação no Banco de Dados
+// Criação no Banco de Dados
+
     public function StoreDepartamento(DepRequest $request)
     {
         $departamento = new Departamento;
@@ -58,7 +59,10 @@ class AdmController extends Controller
         }
     }
 
-    //Edições / Exclusão de Dados
+
+
+//Edições / Exclusão de Dados
+
     public function EditarRel(Request $request)
     {
         $id_rel = $request->id_rel;
@@ -89,7 +93,41 @@ class AdmController extends Controller
         
     }
 
-    // Busca no Banco de Dados
+    public function ExcluirAtributo(Request $request)
+    {
+        $user = Atribuicoe::where('relacionamento_id', $request->id_rel)->where('user_id', $request->id_user)->first();    
+        $user->delete();
+
+        return response()->json('Usuario apagado com Sucesso!');
+    }
+
+    public function ExcluirRel(Request $request)
+
+    {   
+        Relacionamento::destroy($request->id);
+        // Log::info($request);
+        // $dep = Relacionamento::where('id', $request)->first();
+        
+        // $dep->destroy();
+
+        return response()->json('Relacionamento apagado com Sucesso!');
+    }
+
+    public function ExcluirDep(Request $request)
+    {
+        Log::info($request);
+        if(!Relacionamento::where('departamentos_id', $request->id)->first()){
+            $dep = Departamento::where('id', $request->id)->first();
+            $dep->delete();
+
+            return response()->json('Departamento apagado com Sucesso!');
+        }elseif(Relacionamento::where('id', $request->id)->first()){
+            return response()->json(['errors' => ['erro' => 'Não é possivel excluir, pois o departamento faz parte de um Relacionamento!']], 422);
+        } 
+    }
+
+// Busca no Banco de Dados
+
     public function BuscarDep()
     {
         $departamentos = Departamento::all();
