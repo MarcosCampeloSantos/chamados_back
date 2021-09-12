@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdmController;
+use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -29,6 +30,7 @@ Route::post('/criar_top', [AdmController::class, 'StoreTopicos'])->name('CriarTo
 Route::post('/criar_rel', [AdmController::class, 'StoreRelaciomento'])->name('CriarRel'); #Cria novo Relacionamento
 Route::post('/editar_rel', [AdmController::class, 'EditarRel'])->name('EditarRel'); #Edita um relacionamento
 Route::post('/adc_atribuido', [AdmController::class, 'AdcAtributo'])->name('AdcAtributo'); #Edita usuarios atribuidos ao relacionamento
+Route::post('/login', [LoginController::class, 'Login'])->name('Login'); #Edita usuarios atribuidos ao relacionamento
 
 //Methods Delete
 Route::delete('/trash_atribuido', [AdmController::class, 'ExcluirAtributo'])->name('ExcluirAtributo'); #Excluir usuarios atribuidos ao relacionamento
