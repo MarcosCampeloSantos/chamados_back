@@ -34,3 +34,4 @@ Route::post('/adc_atribuido', [AdmController::class, 'AdcAtributo'])->name('AdcA
 Route::delete('/trash_atribuido', [AdmController::class, 'ExcluirAtributo'])->name('ExcluirAtributo'); #Excluir usuarios atribuidos ao relacionamento
 Route::delete('/trash_relacionamento', [AdmController::class, 'ExcluirRel'])->name('ExcluirRel'); #Excluir relacionamentos
 Route::delete('/trash_departamento', [AdmController::class, 'ExcluirDep'])->name('ExcluirDep'); #Excluir Departamento
+Route::delete('/trash_topico', [AdmController::class, 'ExcluirTop'])->name('ExcluirTop'); #Excluir Departamento

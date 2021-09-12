@@ -42,9 +42,9 @@ class AdmController extends Controller
     public function StoreRelaciomento(RelRequest $request)
     {
         $atribuicao = new Atribuicoe;
-        $user = User::where('id', '=', $request->rel_user)->first();
+        $user = User::where('id', $request->rel_user)->first();
         $relacionamentos = new Relacionamento();
-        if(!Relacionamento::where('departamentos_id', '=', $request->rel_dep)->where('topicos_id', '=', $request->rel_top)->first()){
+        if(!Relacionamento::where('departamentos_id', $request->rel_dep)->where('topicos_id', '=', $request->rel_top)->first()){
             $relacionamentos->departamentos_id = $request->rel_dep;
             $relacionamentos->topicos_id = $request->rel_top;
             $relacionamentos->save();
@@ -102,31 +102,43 @@ class AdmController extends Controller
     }
 
     public function ExcluirRel(Request $request)
-
     {   
+        $atribuicoes = Atribuicoe::all();
+
+        foreach ($atribuicoes as $top) {
+            if($top->relacionamento_id == $request->id){
+                $top->delete();
+            }
+        }
         Relacionamento::destroy($request->id);
-        // Log::info($request);
-        // $dep = Relacionamento::where('id', $request)->first();
-        
-        // $dep->destroy();
 
         return response()->json('Relacionamento apagado com Sucesso!');
     }
 
     public function ExcluirDep(Request $request)
     {
-        Log::info($request);
         if(!Relacionamento::where('departamentos_id', $request->id)->first()){
             $dep = Departamento::where('id', $request->id)->first();
             $dep->delete();
 
             return response()->json('Departamento apagado com Sucesso!');
-        }elseif(Relacionamento::where('id', $request->id)->first()){
+        }else{
             return response()->json(['errors' => ['erro' => 'Não é possivel excluir, pois o departamento faz parte de um Relacionamento!']], 422);
         } 
     }
 
-// Busca no Banco de Dados
+    public function ExcluirTop(Request $request)
+    {
+        if(!Relacionamento::where('topicos_id', $request->id)->first()){
+            $top = Topico::where('id', $request->id)->first();
+            $top->delete();
+
+            return response()->json('Topico apagado com Sucesso!');
+        }else{
+            return response()->json(['errors' => ['erro' => 'Não é possivel excluir, pois o Topico faz parte de um Relacionamento!']], 422);
+        }
+    }
+    // Busca no Banco de Dados
 
     public function BuscarDep()
     {
