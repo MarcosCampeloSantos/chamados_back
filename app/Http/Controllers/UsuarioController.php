@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\UsuarioRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UsuarioController extends Controller
 {
@@ -14,7 +15,7 @@ class UsuarioController extends Controller
         $usuario->name = $request->name;
         $usuario->departamento = $request->departamento;
         $usuario->email = $request->email;
-        $usuario->password = $request->password;
+        $usuario->password = Hash::make($request->password);
         $usuario->nivel = $request->nivel;
 
         $usuario->save();
