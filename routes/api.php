@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 |
 */
 Route::post('/login', [LoginController::class, 'Login'])->name('Login'); #Logar
+Route::post('/logout', [LoginController::class, 'Logout'])->name('Logout'); #Logout
 
 Route::middleware(['auth:sanctum'])->group(function () {
     
@@ -33,6 +34,7 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::post('/criar_rel', [AdmController::class, 'StoreRelaciomento'])->name('CriarRel'); #Cria novo Relacionamento
     Route::post('/editar_rel', [AdmController::class, 'EditarRel'])->name('EditarRel'); #Edita um relacionamento
     Route::post('/adc_atribuido', [AdmController::class, 'AdcAtributo'])->name('AdcAtributo'); #Edita usuarios atribuidos ao relacionamento
+
 
     //Methods Delete
     Route::delete('/trash_atribuido', [AdmController::class, 'ExcluirAtributo'])->name('ExcluirAtributo'); #Excluir usuarios atribuidos ao relacionamento

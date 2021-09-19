@@ -6,6 +6,7 @@ use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class LoginController extends Controller
 {
@@ -17,7 +18,8 @@ class LoginController extends Controller
                 $token = $user->createToken($request->email)->plainTextToken;
                 return response()->json([
                     'mensagem' => 'Logado Com Sucesso!',
-                    'auth_token' => $token 
+                    'auth_token' => $token,
+                    'user' => $user
                 ]);
             }else{
                 return   response()->json(['erro' => 'Senha Incorreta!'], 422);
@@ -25,5 +27,16 @@ class LoginController extends Controller
         }else{
             return response()->json(['erro' => 'Usuario Não Existe!'], 422);
         }
+    }
+
+    public function Logout(Request $request)
+    {
+        $userId = $request->input('dados.user.id');
+        $user = User::where('id', $userId)->first();
+        $token = $request->input('dados.auth_token');
+        $tokenId = explode("|", $token);
+        $user->tokens()->where('id', $tokenId[0])->delete();
+
+        return response()->json(['Deslogado']);
     }
 }
