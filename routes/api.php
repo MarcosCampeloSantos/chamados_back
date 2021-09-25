@@ -18,6 +18,8 @@ use Illuminate\Support\Facades\Route;
 */
 Route::post('/login', [LoginController::class, 'Login'])->name('Login'); #Logar
 Route::post('/logout', [LoginController::class, 'Logout'])->name('Logout'); #Logout
+Route::post('/verificacao', [LoginController::class, 'Verificacao'])->name('Verificacao'); #Verificacao
+
 
 Route::middleware(['auth:sanctum'])->group(function () {
     

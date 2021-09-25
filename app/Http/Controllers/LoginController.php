@@ -39,4 +39,13 @@ class LoginController extends Controller
 
         return response()->json(['Deslogado']);
     }
+
+    public function Verificacao(Request $request)
+    {
+        // $token = explode('|', $request->auth_token);
+        // $email = $request->input('user.email');
+
+        // $user = User::where('email', $email)->first();
+        
+    }
 }
