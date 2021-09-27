@@ -5,8 +5,10 @@ namespace App\Http\Controllers;
 use App\Http\Requests\LoginRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+
 
 class LoginController extends Controller
 {
@@ -15,14 +17,12 @@ class LoginController extends Controller
         $user = User::where('email', $request->email)->first();
         if($user){
             if(Hash::check($request->password, $user->password)){
-                $token = $user->createToken($request->email)->plainTextToken;
                 return response()->json([
-                    'mensagem' => 'Logado Com Sucesso!',
-                    'auth_token' => $token,
+                    'auth_token' => $user->createToken($request->email)->plainTextToken,
                     'user' => $user
                 ]);
             }else{
-                return   response()->json(['erro' => 'Senha Incorreta!'], 422);
+                return response()->json(['erro' => 'Senha Incorreta!'], 422);
             }
         }else{
             return response()->json(['erro' => 'Usuario Não Existe!'], 422);
@@ -31,21 +31,35 @@ class LoginController extends Controller
 
     public function Logout(Request $request)
     {
+        
         $userId = $request->input('dados.user.id');
         $user = User::where('id', $userId)->first();
-        $token = $request->input('dados.auth_token');
-        $tokenId = explode("|", $token);
-        $user->tokens()->where('id', $tokenId[0])->delete();
+        // $token = $request->input('dados.auth_token');
+        // $tokenId = explode("|", $token);
+        // Log::info($request);
+        $user->tokens()->delete();
 
         return response()->json(['Deslogado']);
     }
 
     public function Verificacao(Request $request)
     {
-        // $token = explode('|', $request->auth_token);
-        // $email = $request->input('user.email');
+        Log::info($request);
+        if($request->auth_token){
+            $token = explode('|', $request->auth_token);
+            $user_id = $request->input('user.id');
+            $user = User::where('id', $user_id)->first();
+            $tokens = $user->tokens()->get();
 
-        // $user = User::where('email', $email)->first();
+            foreach ($tokens as $chaves) {
+                if($chaves->id == $token[0]){
+                    return response()->json(['Verificacao' => 'true']);
+                }
+            }
+            return response()->json(['erro' => 'Não Autorizado'], 500);
+        }else{
+            return response()->json(['erro' => 'Não Autorizado'], 500);
+        }
         
     }
 }
