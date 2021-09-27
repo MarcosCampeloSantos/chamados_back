@@ -29,8 +29,8 @@ class RelRequest extends FormRequest
     {
         return [
             'rel_dep.required' => 'Departamento é Obrigatorio!',
-            'rel_user.required' => 'Email é Obrigatorio!',
-            'rel_top.required' => 'Email é Obrigatorio!'
+            'rel_user.required' => 'Usuario é Obrigatorio!',
+            'rel_top.required' => 'Topico é obrigatorio!'
         ];
     }
 }
