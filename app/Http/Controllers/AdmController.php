@@ -103,16 +103,21 @@ class AdmController extends Controller
 
     public function ExcluirRel(Request $request)
     {   
-        $atribuicoes = Atribuicoe::all();
+        Log::info($request);
+        if($request->id){
+            $atribuicoes = Atribuicoe::all();
 
-        foreach ($atribuicoes as $top) {
-            if($top->relacionamento_id == $request->id){
-                $top->delete();
+            foreach ($atribuicoes as $top) {
+                if($top->relacionamento_id == $request->id){
+                    $top->delete();
+                }
             }
-        }
-        Relacionamento::destroy($request->id);
+            Relacionamento::destroy($request->id);
 
-        return response()->json('Relacionamento apagado com Sucesso!');
+            return response()->json('Relacionamento apagado com Sucesso!');
+        }else{
+            return response()->json(['errors' => ['erro' => 'Ocorreu erro ao excluir o relacinamento!']], 422);
+        }
     }
 
     public function ExcluirDep(Request $request)

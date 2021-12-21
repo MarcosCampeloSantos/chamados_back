@@ -34,9 +34,6 @@ class LoginController extends Controller
         
         $userId = $request->input('dados.user.id');
         $user = User::where('id', $userId)->first();
-        // $token = $request->input('dados.auth_token');
-        // $tokenId = explode("|", $token);
-        // Log::info($request);
         $user->tokens()->delete();
 
         return response()->json(['Deslogado']);
@@ -44,13 +41,12 @@ class LoginController extends Controller
 
     public function Verificacao(Request $request)
     {
-        Log::info($request);
         if($request->auth_token){
             $token = explode('|', $request->auth_token);
             $user_id = $request->input('user.id');
             $user = User::where('id', $user_id)->first();
             $tokens = $user->tokens()->get();
-
+            
             foreach ($tokens as $chaves) {
                 if($chaves->id == $token[0]){
                     return response()->json(['Verificacao' => 'true']);

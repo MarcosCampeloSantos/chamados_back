@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddDepatamentosIdToRelacionamentosTable extends Migration
+class AddDepartamentoIdToChamadosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddDepatamentosIdToRelacionamentosTable extends Migration
      */
     public function up()
     {
-        Schema::table('relacionamentos', function (Blueprint $table) {
-            $table -> foreignId('departamentos_id')->constrained();
+        Schema::table('chamados', function (Blueprint $table) {
+            $table->foreignId('departamento_id')->constrained();
         });
     }
 
@@ -25,8 +25,8 @@ class AddDepatamentosIdToRelacionamentosTable extends Migration
      */
     public function down()
     {
-        Schema::table('relacionamentos', function (Blueprint $table) {
-            $table -> foreignId('departamentos_id')->constrained()->onDelete('cascade');
+        Schema::table('chamados', function (Blueprint $table) {
+            $table->foreignId('departamento_id')->constrained()->onDelete('cascade');
         });
     }
 }
