@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateChamadosTable extends Migration
+class CreateAnexosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,12 @@ class CreateChamadosTable extends Migration
      */
     public function up()
     {
-        Schema::create('chamados', function (Blueprint $table) {
+        Schema::create('anexos', function (Blueprint $table) {
             $table->id();
-            $table->string('title');
+            $table->foreignId('interacoe_id')->constrained();
+            $table->foreignId('user_id')->constrained();
+            $table->string('anexo');
+            $table->string('nameanexo');
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ class CreateChamadosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('chamados');
+        Schema::dropIfExists('anexos');
     }
 }

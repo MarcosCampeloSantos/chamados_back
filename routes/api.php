@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdmController;
 use App\Http\Controllers\ChamadoController;
+use App\Http\Controllers\InteracoesController;
 use App\Http\Controllers\LoginController;
 use App\Http\Controllers\UsuarioController;
 use Illuminate\Http\Request;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 | is assigned the "api" middleware group. Enjoy building your API!
 |
 */
+
 Route::post('/login', [LoginController::class, 'Login'])->name('Login'); #Logar
 Route::post('/logout', [LoginController::class, 'Logout'])->name('Logout'); #Logout
 Route::post('/verificacao', [LoginController::class, 'Verificacao'])->name('Verificacao'); #Verificacao
@@ -31,7 +33,9 @@ Route::middleware(['auth:sanctum'])->group(function () {
     Route::get('/buscar_rel', [AdmController::class, 'BuscarRel'])->name('BuscarRel'); #Busca Todos os Relacionamentos
 
     // Methods Post
-    Route::post('/criar_chamado', [ChamadoController::class, 'StoreChamado'])->name('StoreChamado'); #Cria novo Chamado
+    Route::resource('/chamado', ChamadoController::class); #Chamado
+    Route::resource('/interacoes', InteracoesController::class); #Interacoes do Chamado
+    // Route::post('/criar_chamado', [ChamadoController::class, 'StoreChamado'])->name('StoreChamado'); #Cria novo Chamado
     Route::post('/criar_user', [UsuarioController::class, 'StoreUsuario'])->name('CriarUsuario'); #Cria novo Usuario
     Route::post('/criar_dep', [AdmController::class, 'StoreDepartamento'])->name('CriarDep'); #Cria novo Departamento
     Route::post('/criar_top', [AdmController::class, 'StoreTopicos'])->name('CriarTop'); #Cria novo Topico

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddAnexonameToInteracoesTable extends Migration
+class AddTopicoIdToChamadosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddAnexonameToInteracoesTable extends Migration
      */
     public function up()
     {
-        Schema::table('interacoes', function (Blueprint $table) {
-            $table->string('nameanexo')->nullable($value = true);
+        Schema::table('chamados', function (Blueprint $table) {
+            $table->foreignId('topico_id')->constrained();
         });
     }
 
@@ -25,8 +25,8 @@ class AddAnexonameToInteracoesTable extends Migration
      */
     public function down()
     {
-        Schema::table('interacoes', function (Blueprint $table) {
-            //
+        Schema::table('chamados', function (Blueprint $table) {
+            $table->foreignId('topico_id')->constrained()->onDelete('cascade');
         });
     }
 }

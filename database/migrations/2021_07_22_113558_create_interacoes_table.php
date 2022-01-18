@@ -15,11 +15,10 @@ class CreateInteracoesTable extends Migration
     {
         Schema::create('interacoes', function (Blueprint $table) {
             $table->id();
-            $table->string('chamado_id');
-            $table->string('chat');
-            $table->string('anexo')->nullable($value = true);
-            $table->string('inicio')->nullable($value = true);
+            $table->unsignedBigInteger('chamado_id');
             $table->unsignedBigInteger('user_id');
+            $table->string('chat');
+            $table->foreign('chamado_id')->references('id')->on('chamados');
             $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
