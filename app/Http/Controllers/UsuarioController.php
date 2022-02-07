@@ -6,6 +6,7 @@ use App\Http\Requests\UsuarioRequest;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class UsuarioController extends Controller
 {
@@ -20,7 +21,6 @@ class UsuarioController extends Controller
 
         $usuario->save();
 
-        return response()->json('Usuario criado com Sucesso!');
     }
 
     public function BuscarUsers()
@@ -28,5 +28,25 @@ class UsuarioController extends Controller
         $usuario = User::all();
 
         return response()->json($usuario);
+    }
+
+    public function ModoOperador(Request $request)
+    {
+        Log::info($request);
+
+        $user = User::find($request->id_usuario);
+
+        if($request->modo_acesso == true){
+            $user->operador = true;
+        }else{
+            $user->operador = false;
+        }
+        
+
+        $user->save();
+
+        return response()->json([
+            'user' => $user
+        ]);
     }
 }

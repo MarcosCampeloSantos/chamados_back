@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddRelacionamentoIdToAtribuicoesTable extends Migration
+class AddOperadorToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class AddRelacionamentoIdToAtribuicoesTable extends Migration
      */
     public function up()
     {
-        Schema::table('atribuicoes', function (Blueprint $table) {
-            $table->foreignId('relacionamento_id')->constrained();
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('operador')->default(false);
         });
     }
 
@@ -25,8 +25,8 @@ class AddRelacionamentoIdToAtribuicoesTable extends Migration
      */
     public function down()
     {
-        Schema::table('atribuicoes', function (Blueprint $table) {
-            $table->foreignId('relacionamento_id')->constrained()->onDelete('cascade');
+        Schema::table('users', function (Blueprint $table) {
+            $table->boolean('operador')->onDelete('cascade');
         });
     }
 }

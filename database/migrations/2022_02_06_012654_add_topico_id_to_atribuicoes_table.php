@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateDepartamentosTable extends Migration
+class AddTopicoIdToAtribuicoesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,11 +13,8 @@ class CreateDepartamentosTable extends Migration
      */
     public function up()
     {
-        Schema::create('departamentos', function (Blueprint $table) {
-            $table->id();
-            $table->string('departamentos');
-            $table->string('menssageremail');
-            $table->timestamps();
+        Schema::table('atribuicoes', function (Blueprint $table) {
+            $table->foreignId('topico_id')->constrained();
         });
     }
 
@@ -28,6 +25,8 @@ class CreateDepartamentosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('departamentos');
+        Schema::table('atribuicoes', function (Blueprint $table) {
+            $table->foreignId('topico_id')->constrained()->onDelete('cascade');
+        });
     }
 }

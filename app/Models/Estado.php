@@ -5,12 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Departamento extends Model
+class Estado extends Model
 {
     use HasFactory;
-
-    public function relacionamentos()
-    {
-        return $this->belongsTo(Relacionamento::class);
-    }
 }

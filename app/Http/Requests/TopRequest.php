@@ -14,7 +14,7 @@ class TopRequest extends FormRequest
     public function rules()
     {
         return [
-            'cria_top' => 'required',
+            'name_topico' => 'required',
         ];
     }
 
@@ -26,7 +26,7 @@ class TopRequest extends FormRequest
     public function messages()
     {
         return [
-            'cria_top.required' => 'Campo Topico Obrigatorio!'
+            'name_topico.required' => 'Campo Topico Obrigatorio!'
         ];
     }
 }
